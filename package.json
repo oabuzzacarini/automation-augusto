@@ -1,0 +1,23 @@
+{
+  "name": "automation-augusto",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oabuzzacarini/automation-augusto.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/oabuzzacarini/automation-augusto/issues"
+  },
+  "homepage": "https://github.com/oabuzzacarini/automation-augusto#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.9.2"
+  }
+}
