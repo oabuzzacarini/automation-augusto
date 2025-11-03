@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { USERS } from "./data/login";
+import { USERS } from "../data/login";
 
 async function performLogin(page, username, password) {
   await test.step('Fill in login credentials', async () => {
@@ -56,7 +56,7 @@ test('Incorrect password 3 times', async ({ page }) => {
       await page.getByRole('button', { name: 'Login' }).click();
       await expect(page.getByText(USERS.invalid_pass.expect)).toBeVisible();
     }
-    await page.getByRole('button', { name: 'Login' }).click();
+    await page.getByRole('button', { name: 'Login' }).click(); //click count(3)
   });
 
   await test.step('Validate account blocked after 3 failed attempts', async () => {
