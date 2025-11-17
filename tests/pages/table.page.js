@@ -19,24 +19,24 @@ export class TablePage {
         });
     }
 
-    async CheckCharacter(Character, value , birth) {
-        await test.step('Checking Character: ' + Character.name + ' || ' + value + ' || ' + birth, async () => {
+    async checkCharacter(character, value , birth) {
+        await test.step('Checking Character: ' + character.name + ' || ' + value + ' || ' + birth, async () => {
             await expect(this.CharacterActorID(value)).toBeVisible();
-            await expect(this.CharacterActorID(value)).toHaveText(Character.actor);
-            await expect(this.CharacterActor(Character.actor)).toBeVisible();
+            await expect(this.CharacterActorID(value)).toHaveText(character.actor);
+            await expect(this.CharacterActor(character.actor)).toBeVisible();
 
             await expect(this.CharacterDateOfBirthID(value)).toBeVisible();
             await expect(this.CharacterDateOfBirthID(value)).toHaveText(birth);
             await expect(this.CharacterDateOfBirth(birth)).toBeVisible();
 
             await expect(this.CharacterImageID(value)).toBeVisible();
-            await expect(this.CharacterImage(Character.name)).toBeVisible();
+            await expect(this.CharacterImage(character.name)).toBeVisible();
             
             await expect(this.CharacterNameID(value)).toBeVisible();
-            await expect(this.CharacterNameID(value)).toHaveText(Character.name);
+            await expect(this.CharacterNameID(value)).toHaveText(character.name);
             
             await expect(this.CharacterHouseID(value)).toBeVisible();
-            await expect(this.CharacterHouseID(value)).toHaveText(Character.house);
+            await expect(this.CharacterHouseID(value)).toHaveText(character.house);
         });
     }
 }

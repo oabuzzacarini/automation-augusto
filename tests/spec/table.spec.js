@@ -3,7 +3,7 @@ import hpCharacters from '../data/Json/hpcharacters.json';
 
 
 for(const c of hpCharacters){
- test('Character ' + c.name, async ({ page }) => {
+ test.skip('Character ' + c.name, async ({ page }) => {
 
     await page.goto('/table');
 

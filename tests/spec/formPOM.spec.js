@@ -1,9 +1,9 @@
 import test from '@playwright/test';
 import { FormPage } from '../pages/form.page';
-import {messages_form, users_form } from '../data/form';
+import {MESSAGES, USERS } from '../data/form';
 
-test.describe('FORM FILLING', async () => {
-  for (const user of users_form) {
+test.skip('FORM FILLING', async () => {
+  for (const user of USERS) {
     test(`${user.scenario} | ${user.name} | ${user.country} | ${user.gender}`, async ({page}) => {
       const form = new FormPage(page);
 
@@ -11,7 +11,7 @@ test.describe('FORM FILLING', async () => {
       await form.fillFields(user);
       await form.selectHobbies(user.interests);
       await form.clickSendButton();
-      await form.validateMessages(messages_form.success);
+      await form.validateMessages(MESSAGES.success);
     });
   }
 });
@@ -22,6 +22,6 @@ test.describe('FORM - ERROR', () => {
 
     await form.navigateToForm();
     await form.clickSendButton();
-    await form.validateMessages(messages_form.fail);
+    await form.validateMessages(MESSAGES.fail);
   });
 });

@@ -10,7 +10,7 @@ test.describe('Character checking', async () => {
          const table = new TablePage(page);
          
          await table.navigateToTable();
-         await table.CheckCharacter(c, namewithoutspace, birth);;
+         await table.checkCharacter(c, namewithoutspace, birth);;
       });
    }
 });

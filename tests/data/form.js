@@ -1,4 +1,4 @@
-export const users_form = [
+export const USERS = [
   {
     scenario: 'Full form',
     name: 'Otavio',
@@ -63,7 +63,7 @@ export const users_form = [
   }
 ];
 
-export const messages_form = {
+export const MESSAGES = {
   fail: [
     'The name field is required.', 
     'The email field is required.', 
