@@ -51,15 +51,15 @@ Everything is automated against a practice application and sample APIs for testi
 
 ```
 tests/
-├── data/        # Test data
-├── pages/       # Page Objects
-├── specs/       # Test specs
-│   ├── api/     # API tests
-│   ├── desktop/ # Desktop UI tests
-│   │   ├── ddt/ # Data-driven tests
-│   │   └── pom/ # POM-based tests
-│   └── mobile/  # Mobile UI tests
-playwright.config.js  # Playwright configuration
+├── data/              # Test data
+├── pages/             # Page Objects
+├── specs/             # Test specs
+│   ├── api/           # API tests
+│   ├── desktop/       # Desktop UI tests
+│   │   ├── ddt/       # Data-driven tests
+│   │   └── pom/       # POM-based tests
+│   └── mobile/        # Mobile UI tests
+playwright.config.js   # Playwright configuration
 package.json          
 README.md             
 ```                      
