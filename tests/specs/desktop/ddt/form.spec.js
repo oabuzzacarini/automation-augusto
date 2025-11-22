@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { MESSAGES, USERS } from "../../../data/form";
 
 /**
- * 🔹 Before each test
+ * Before each test
  * Navigate to the /form page to start from a clean state.
  */
 test.beforeEach(async ({ page }) => {
@@ -10,10 +10,10 @@ test.beforeEach(async ({ page }) => {
 });
 
 /**
- * 🔹 Test: Fill the form for multiple users
+ * Test: Fill the form for multiple users
  * Loops over USERS array and fills out the form for each user.
  */
-test.skip('🔹 Fill form for multiple users', async ({ page }) => {
+test.skip('Fill form for multiple users', async ({ page }) => {
   for (const user of USERS) {
     await test.step(`Filling out form for ${user.name}`, async () => {
       // 🌐 Ensure a fresh page for each user
@@ -45,9 +45,9 @@ test.skip('🔹 Fill form for multiple users', async ({ page }) => {
 });
 
 /**
- * 🔹 Test: Display validation errors on empty form
+ * Test: Display validation errors on empty form
  */
-test('🔹 Display validation errors on empty form', async ({ page }) => {
+test('Display validation errors on empty form', async ({ page }) => {
   await test.step('Submit empty form and check validation messages', async () => {
     // 🖱 Click "Send" without filling anything
     await page.getByRole('button', { name: 'Send' }).click();

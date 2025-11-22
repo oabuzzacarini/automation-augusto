@@ -8,7 +8,7 @@ import { TYPES } from '../../data/pokemonType.data';
  * - request: Playwright's APIRequestContext, used to make HTTP requests.
  * - TYPES[0].doubleDamage: The expected type from which "Normal" receives double damage.
  */
-test('🔹 Validate Normal TYPE', async ({ request }) => {
+test('Validate Normal TYPE', async ({ request }) => {
 
   // 🌐 Fetch the "Normal" type data from the Pokémon API
   const response = await request.get('https://pokeapi.co/api/v2/type/normal/');

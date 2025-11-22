@@ -2,12 +2,11 @@ import test, { expect } from '@playwright/test';
 
 /**
  * Page Object Model (POM) for the /form page.
- *
- * Provides:
- *  - 📌 Navigation utilities
- *  - ✏️ Actions to interact with the form
- *  - 🔍 Assertions for validation
- *  - 🎯 Fixed and dynamic locators
+ * This class exposes:
+ * - 📌 Navigation utilities
+ * - ✏️ Actions to interact with the form
+ * - 🔍 Assertions for validation
+ * - 🎯 Fixed and dynamic locators
  */
 export class FormPage {
   constructor(page) {

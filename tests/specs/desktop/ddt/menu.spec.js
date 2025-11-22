@@ -1,32 +1,37 @@
 import { test, expect } from '@playwright/test';
+import { MENUS } from '../../../data/menus.data';
 
-// ===============================
-// 🔹 Menu LOGIN validation
-// ===============================
-test('Menu LOGIN validation', async ({ page }) => { 
-  // 🔹 Navigate to the playground home page
-  await page.goto('');
-  await expect(page).toHaveTitle("Playground page");  
+/**
+ *  Validation a list of Menus
+*/
+test('Menu validation', async ({ page }) => {   
 
-  // 🔹 Click the LOGIN link in the menu
-  await page.getByRole('link', { name: 'LOGIN' }).click();
+  // Iterate over all menu items in the dataset
+  for (const menu of MENUS) {
 
-  // 🔹 Validate that the LOGIN page heading is visible and correct
-  await expect(page.getByRole('heading', { name: 'LOGIN' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'LOGIN' })).toHaveText("Login");
-});
+    /**
+     * Validate a menu.
+     * 
+     * @param menu.value {string} - ID of the Menu (used as link text).
+     * @param menu.name  {string} - Display name of the Menu.
+     */
+    await test.step(`MENU - ${menu.name}`, async () => {
 
-// ===============================
-// 🔹 Menu FORM validation
-// ===============================
-test('Menu FORM validation', async ({ page }) => { 
-  // 🔹 Navigate to the playground home page
-  await page.goto('');
-  await expect(page).toHaveTitle("Playground page");  
+      // Navigate to the application's home page
+      await page.goto('');
 
-  // 🔹 Click the FORM link in the menu
-  await page.getByRole('link', { name: 'FORM' }).click();
+      // Validate the page title
+      await expect(page).toHaveTitle('Playground page');
 
-  // 🔹 Validate that the FORM page heading is visible
-  await expect(page.getByRole('heading', { name: 'FORM' })).toBeVisible();
+      // Click the menu link based on the dataset value
+      await page.getByRole('link', { name: menu.value }).click();
+
+      console.log(menu.value);
+      // Validate that the corresponding page heading is visible
+      await expect(page.getByRole('heading', { name: menu.value })).toBeVisible();
+
+      // Validate that the heading text matches the menu name in the dataset
+      await expect(page.getByRole('heading', { name: menu.value })).toHaveText(menu.name);
+    });
+  }
 });

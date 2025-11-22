@@ -2,7 +2,7 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * 🔹 Test: Validate page title
+ * Test: Validate page title
  */
 test('🔹 has title', async ({ page }) => {
   // 🌐 Navigate to the Playwright homepage
@@ -13,9 +13,9 @@ test('🔹 has title', async ({ page }) => {
 });
 
 /**
- * 🔹 Test: Verify "Get started" link navigation
+ * Test: Verify "Get started" link navigation
  */
-test('🔹 get started link', async ({ page }) => {
+test('Get started link', async ({ page }) => {
   // 🌐 Navigate to the Playwright homepage
   await page.goto('https://playwright.dev/');
 

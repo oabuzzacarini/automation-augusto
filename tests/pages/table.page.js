@@ -2,11 +2,10 @@ import test, { expect } from '@playwright/test';
 
 /**
  * Page Object Model (POM) for the /table page.
- *
- * Provides:
- *  - 📌 Navigation utilities
- *  - 🔍 Check information (name, image, house, actor, etc.)
- *  - 🎯 Assertions using expect
+ * This class exposes:
+ * - 📌 Navigation utilities
+ * - 🔍 Check information (name, image, house, actor, etc.)
+ * - 🎯 Assertions using expect
  */
 export class TablePage {
     constructor(page) {
