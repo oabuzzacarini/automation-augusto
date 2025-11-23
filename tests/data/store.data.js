@@ -3,8 +3,10 @@ export const STORE_CASES = {
         scenario: 'Add product in Inventory',
         name: 'Product Test',
         price: '12.50',
-        quantity: '3'
-    },
+        quantity: '3',
+        id: '8'
+  },
+
   INCREASE: {
         scenario: 'Increase product in Inventory',
         name: 'Invisible Pen',
@@ -12,7 +14,8 @@ export const STORE_CASES = {
         quantity: '20',
         id: '6',
         inicialStock: '0'
-    },
+  },
+
   DECREASE: {
         scenario: 'Decrease product in Inventory',
         name: 'Shark Repellen',
@@ -20,8 +23,9 @@ export const STORE_CASES = {
         quantity: '5',
         id: '2', 
         inicialStock: '5'
-    },
-      BUY_ONE: {
+  },
+
+  BUY_ONE: {
         scenario: 'Buy a product from Catalog',
         name: 'Lightsaber (Star Wars)',
         price: '9999.99',
@@ -30,8 +34,9 @@ export const STORE_CASES = {
         total: '19999.98',
         paymentMethod: 'Multibanco',
         inicialStock: '2'
-    },
-      BUY_TWO: {
+  },
+
+  BUY_TWO: {
         scenario: 'Buy two products from Catalog',
         name: 'Aluminum Helmet for Protection Against Alien Mind Control',
         price: '19.99',
@@ -40,5 +45,5 @@ export const STORE_CASES = {
         total: '39.98',
         paymentMethod: 'MBWay',
         inicialStock: '50'
-    },
+  },
 };

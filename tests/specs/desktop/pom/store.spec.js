@@ -59,6 +59,7 @@ test.describe('Store Page Scenarios', () => {
       await store.navigateToCatalog();
       await store.addProductCatalog(product);
       await store.expectProductOutOfStock(product);
+      // verificar o inventario
     });
 
     await test.step('Validate product in cart page', async () => {
@@ -103,7 +104,7 @@ test.describe('Store Page Scenarios', () => {
     });
 
     await test.step('Validate product visibility in the last position', async () => {
-      await store.expectProductVisible(8, product);
+      await store.expectProductVisible(product);
       await store.expectLastProductList(product.name);
     });
   });
@@ -121,9 +122,9 @@ test.describe('Store Page Scenarios', () => {
     });
 
     await test.step('Validate product in stock in inventory and catalog pages', async () => {
-      await store.expectProductInStock('inventory', 'increased', product);
+      await store.expectProductQuantity('inventory', 'increased', product);
       await store.navigateToCatalog();
-      await store.expectProductInStock('catalog', 'increased', product);
+      await store.expectProductQuantity('catalog', 'increased', product);
     });
   });
 
@@ -140,9 +141,9 @@ test.describe('Store Page Scenarios', () => {
     });
 
     await test.step('Validate product in stock in inventory and catalog pages', async () => {
-      await store.expectProductInStock('inventory', 'decreased', product);
+      await store.expectProductQuantity('inventory', 'decreased', product);
       await store.navigateToCatalog();
-      await store.expectProductInStock('catalog', 'decreased', product);
+      await store.expectProductQuantity('catalog', 'decreased', product);
     });
   });
 
@@ -157,6 +158,11 @@ test.describe('Store Page Scenarios', () => {
       await store.navigateToCatalog();
       await store.addProductCatalog(product);
       await store.expectProductOutOfStock(product);
+    });
+
+    await test.step('Validate product in inventory page', async () => {
+      await store.navigateToInventory();
+      await store.expectProductQuantity('inventory', 'decreased', product);
     });
 
     await test.step('Validate product in cart page', async () => {
@@ -195,18 +201,28 @@ test.describe('Store Page Scenarios', () => {
     const productOne = STORE_CASES.BUY_ONE;
     const productTwo = STORE_CASES.BUY_TWO;
 
-    await test.step('Add first product from catalog', async () => {
+    await test.step('Add the first product from catalog', async () => {
       await store.navigateToCatalog();
       await store.addProductCatalog(productOne);
       await store.expectProductOutOfStock(productOne);
     });
 
-    await test.step('Add second product from catalog', async () => {
-      await store.navigateToCatalog();
-      await store.addProductCatalog(productTwo);
-      await store.expectProductInStock('catalog', 'decreased', productTwo);
+    await test.step('Validate the first product in inventory page', async () => {
+      await store.navigateToInventory();
+      await store.expectProductQuantity('inventory', 'decreased', productOne);
     });
 
+    await test.step('Add the second product from catalog', async () => {
+      await store.navigateToCatalog();
+      await store.addProductCatalog(productTwo);
+      await store.expectProductQuantity('catalog', 'decreased', productTwo);
+    });
+
+    await test.step('Validate the second product in inventory page', async () => {
+      await store.navigateToInventory();
+      await store.expectProductQuantity('inventory', 'decreased', productTwo);
+    });
+    
     await test.step('Validate products in cart page', async () => {
       await store.navigateToCart();
       await store.expectProductListCart(0, productOne);

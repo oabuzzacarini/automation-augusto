@@ -320,7 +320,6 @@ constructor(page) {
     });
   }    
 
-
   async clickConfirmPayment() {
     await test.step('Click "Confirm Payment" button', async () => {
       await this.buttonSubmitPayment.click();
@@ -387,14 +386,13 @@ constructor(page) {
 
   /**
   * Assert a product is visible in Inventory.
-  * @param {number} id - Product index in the list.
   * @param {object} product - Product object with name, price, quantity.
   */
-  async expectProductVisible(id, product) {
-    await test.step(`Assert product #${id} "${product.name}" is visible in inventory`, async () => {
-      await expect(this.inventoryProductName(id)).toHaveText(product.name);
-      await expect(this.inventoryProductPrice(id)).toHaveText(product.price);
-      await expect(this.inventoryProductQuantity(id)).toHaveText(product.quantity);
+  async expectProductVisible(product) {
+    await test.step(`Assert product #${product.id} "${product.name}" is visible in inventory`, async () => {
+      await expect(this.inventoryProductName(product.id)).toHaveText(product.name);
+      await expect(this.inventoryProductPrice(product.id)).toHaveText(product.price);
+      await expect(this.inventoryProductQuantity(product.id)).toHaveText(product.quantity);
     });
   }
 
@@ -409,13 +407,13 @@ constructor(page) {
   }
 
   /**
-  * Assert a product is in stock.
+  * Assert a quantity of the product.
   * @param {'inventory'|'catalog'} pageType - Page type.
   * @param {'increased'|'decreased'} action - Whether the stock was increased or decreased.
   * @param {object} product - Product object with name, price, quantity.
   */
-  async expectProductInStock(pageType, action, product) {
-    await test.step(`Assert product "${product.name}" is in stock on ${pageType}`, async () => {
+  async expectProductQuantity(pageType, action, product) {
+    await test.step(`Assert quantity of the product "${product.name}" on ${pageType}`, async () => {
     
      const quantityLocator = pageType === 'inventory' 
      ? this.inventoryProductQuantity(product.id) 
