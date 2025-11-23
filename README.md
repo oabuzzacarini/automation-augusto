@@ -66,6 +66,48 @@ README.md
 
 ---
 
+# 🛠️ Prerequisites
+
+Before setting up the project, make sure to install:
+
+- **Node.js** (required to run Playwright)  
+  Download from: https://nodejs.org  
+- **NPM** (comes with Node.js)  
+- **Git** (for cloning the repository)  
+
+---
+
+# 📦 Installation
+
+Follow the steps below to set up the project locally:
+
+### 1. Install Node.js
+
+If you don't have Node.js installed yet, download and install it from:  
+https://nodejs.org
+
+---
+
+### 2. Clone the repository
+
+```bash
+git clone https://github.com/oabuzzacarini/automation-augusto.git
+cd automation-augusto
+```
+
+### 3. Install project dependencies
+
+```bash
+npm install
+```
+
+### 4. Install Playwright browsers
+
+```bash
+npx playwright install
+```
+---
+
 # ⚙️ Running Tests
 
 ### Run some of tests
