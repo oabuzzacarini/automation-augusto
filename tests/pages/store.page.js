@@ -210,59 +210,57 @@ constructor(page) {
   // 📌 Navigations
   // ===============================
   async navigateToStore() {
-    await test.step('Navigate to Store page', async () => {
+    await test.step('Navigate to store page', async () => {
       await this.page.goto('/store');
       await this.validatePage(this.pageHome, this.titleHome, 'Instructions');
     });
   }
 
   async navigateToInventory() {
-    await test.step('Navigate to Inventory page', async () => {
+    await test.step('Navigate to inventory page', async () => {
       await this.tabInventory.click();
       await this.validatePage(this.pageInventory, this.titleInventory, 'Inventory Management');
     });
   }
 
   async navigateToCatalog() {
-    await test.step('Navigate to Catalog page', async () => {
+    await test.step('Navigate to catalog page', async () => {
       await this.tabCatalog.click();
       await this.validatePage(this.pageCatalog, this.titleCatalog, 'Product Catalog');
     });
   }
 
   async navigateToCart() {
-    await test.step('Navigate to Cart page', async () => {
+    await test.step('Navigate to cart page', async () => {
       await this.tabCart.click();
       await this.validatePage(this.pageCart, this.titleCart, 'Your Cart');
     });
   }
 
   async navigateToPayments() {
-    await test.step('Navigate to Payments page', async () => {
+    await test.step('Navigate to payments page', async () => {
       await this.tabPayments.click();
       await this.validatePage(this.pagePayment, this.titlePayment, 'Payment');
     });
   }
   
   async navigateToPaymentsThroughButton() {
-    await test.step('Navigate to Payments page though the Go To Payments button', async () => {
+    await test.step('Navigate to payments page through "Go to Payments" button', async () => {
       await this.buttonSubmitCart.click();
       await this.validatePage(this.pagePayment, this.titlePayment, 'Payment');
     });
   }
 
   async navigateToOrders() {
-    await test.step('Navigate to Orders page', async () => {
+    await test.step('Navigate to orders page', async () => {
       await this.tabOrders.click();
       await this.validatePage(this.pageOrders, this.titleOrders, 'Purchase Orders');
     });
   }
-   
   
   // ===============================
   // ✏️ Generic actions
   // ===============================
-
 
   /**
   * Fill the product input with a given text (does not submit).
@@ -276,32 +274,29 @@ constructor(page) {
     });
   }
 
-  /**
-  * Click the "Add Product" button to submit the form.
-  */
-  async clickSubmit() {
-    await test.step('Click on "Add" product button', async () => {
+  async clickAddProductInventory() {
+    await test.step('Click "Add Product" button', async () => {
       await this.buttonSubmitInventory.click();
     });
   }
 
   /**
-  * Create a new product by typing in the input and clicking "Add".
+  * Create a new product in Inventory.
   * @param {string} product - Product description to create.
   */
   async addProductInventory(product) {
-    await test.step(`Add new product with name: "${product.name}"`, async () => {
+    await test.step(`Add new product "${product.name}" to Inventory`, async () => {
       await this.fillProductInput(product);
-      await this.clickSubmit();     
+      await this.clickAddProductInventory();     
     });
   }
 
   /**
-  * Add a product from Catalog clicking "Add to Cart".
-  * @param {string} product - Product description to add.
+  * Add a product from Catalog to the cart.
+  * @param {object} product - Product object with id.
   */
   async addProductCatalog(product) {
-    await test.step(`Add a product with name: "${product.name}"`, async () => {
+    await test.step(`Add product "${product.name}" from Catalog to cart`, async () => {
       for (let i = 0; i < 2; i++) {
           await this.catalogItemAdd(product.id).click();
       }
@@ -309,28 +304,51 @@ constructor(page) {
   }
 
   /**
-  * Confirm the payment of the product.
+  * Adjust a product quantity in Inventory.
+  * @param {object} product - Product object with id, name, quantity.
+  * @param {'increase'|'decrease'} action - Action to perform on the product.
   */
-  async confirmPayment() {
-    await test.step(`Select and Confirm payment`, async () => {
-      await this.inputPaymentMultibanco.click();
+  async adjustProductInventory(product, action) {
+    await test.step(`${action === 'increase' ? 'Increase' : 'Decrease'} product "${product.name}"`, async () => {
+      const button = action === 'increase' 
+        ? this.inventoryProductIncrease(product.id) 
+        : this.inventoryProductDecrease(product.id);
+
+      for (let i = 0; i < product.quantity; i++) {
+        await button.click();
+      }
+    });
+  }    
+
+
+  async clickConfirmPayment() {
+    await test.step('Click "Confirm Payment" button', async () => {
       await this.buttonSubmitPayment.click();
     });
   }
 
-  // ===============================
-  // 🎯 Shared Assertions
-  // ===============================
-
   /**
-  * Assert that there are no item in the cart page.
+  * Confirm payment for a product using a specific method.
+  * @param {'MBWay'|'Klarna'|'Multibanco'|'PayPal'|'Visa'} method - Payment method.
   */
-  async expectNoItemsCartPage() {
-    await test.step('Assert there are no itens in the cart', async () => {
-      await this.navigateToCart(); 
-      await expect(this.labelEmptyCart).toBeVisible();
+  async confirmPayment(methodPayment) {
+    await test.step(`Select and confirm payment with ${methodPayment}`, async () => {
+      const paymentInputs = {
+        MBWay: this.inputPaymentMbway,
+        Klarna: this.inputPaymentKlarna,
+        Multibanco: this.inputPaymentMultibanco,
+        PayPal: this.inputPaymentPaypal,
+        Visa: this.inputPaymentVisa,
+      };
+
+      await paymentInputs[methodPayment].click();
+      await this.clickConfirmPayment();
     });
   }
+
+  // ===============================
+  // 🎯 Assertions
+  // ===============================
 
   /**
   * Assert that is in the correct page.
@@ -341,30 +359,39 @@ constructor(page) {
   }
 
   /**
-  * Assert that there are items in the Orders page.
+  * Assert no items on the cart page.
   */
-  async expectNoItemsOrdersPage() {
-    await test.step('Assert there are no itens in the orders', async () => {
-      await this.navigateToOrders(); 
-      await expect(this.labelEmptyOrders).toBeVisible();
+  async expectNoItemsCartPage() {
+    await test.step('Assert cart page has no items', async () => {
+      await expect(this.labelEmptyCart).toBeVisible();
     });
   }
 
   /**
-  * Assert that there are no item in the payment page.
+  * Assert no items on the payment page.
   */
    async expectNoItemsPaymentPage() {
-    await test.step('Assert there are no itens in the payment', async () => {
-      await this.navigateToPayments(); 
+    await test.step('Assert payment page has no items', async () => {
       await expect(this.labelEmptyPayment).toBeVisible();
     });
   }
 
   /**
-  * Assert that a product with a given id is visible and has the expected information.
+  * Assert no items on the orders page.
+  */
+  async expectNoItemsOrdersPage() {
+    await test.step('Assert orders page has no items', async () => {
+      await expect(this.labelEmptyOrders).toBeVisible();
+    });
+  }
+
+  /**
+  * Assert a product is visible in Inventory.
+  * @param {number} id - Product index in the list.
+  * @param {object} product - Product object with name, price, quantity.
   */
   async expectProductVisible(id, product) {
-    await test.step(`Assert product #${id} is visible with name "${product.name}"`, async () => {
+    await test.step(`Assert product #${id} "${product.name}" is visible in inventory`, async () => {
       await expect(this.inventoryProductName(id)).toHaveText(product.name);
       await expect(this.inventoryProductPrice(id)).toHaveText(product.price);
       await expect(this.inventoryProductQuantity(id)).toHaveText(product.quantity);
@@ -372,39 +399,94 @@ constructor(page) {
   }
 
   /**
-  * Assert that the last product in the list has the expected product name.
+  * Assert the last product in Inventory list matches expected.
+  * @param {string} productName - Name of the last product.
   */
-  async expectLastProductList(product) {
-    await test.step(`Assert last item in the list`, async () => {
-      await expect(this.lastProductItemInventoryPage()).toHaveText(product);
+  async expectLastProductList(productName) {
+    await test.step(`Assert last product in inventory list`, async () => {
+      await expect(this.lastProductItemInventoryPage()).toHaveText(productName);
     });
   }
 
   /**
-  * Assert that a product is out of stock.
+  * Assert a product is in stock.
+  * @param {'inventory'|'catalog'} pageType - Page type.
+  * @param {'increased'|'decreased'} action - Whether the stock was increased or decreased.
+  * @param {object} product - Product object with name, price, quantity.
+  */
+  async expectProductInStock(pageType, action, product) {
+    await test.step(`Assert product "${product.name}" is in stock on ${pageType}`, async () => {
+    
+     const quantityLocator = pageType === 'inventory' 
+     ? this.inventoryProductQuantity(product.id) 
+     : this.catalogItemQuantity(product.id);
+
+      const quantity = action === 'increased'
+      ? String(Number(product.inicialStock) + Number(product.quantity))
+      : String(Number(product.inicialStock) - Number(product.quantity));
+
+      await expect(quantityLocator).toContainText(quantity);
+    });
+  }
+
+  /**
+  * Assert a product is out of stock in Catalog.
+  * @param {object} product - Product object with name, price, quantity.
   */
   async expectProductOutOfStock(product) {
-    await test.step(`Assert a product is out of stock with name "${product.name}"`, async () => {
+    await test.step(`Assert product "${product.name}" is out of stock in catalog page`, async () => {
       await expect(this.catalogItemAdd(product.id)).toHaveText('Out of Stock');
       await expect(this.catalogItemQuantity(product.id)).toHaveText('0 units');
     });
   }
 
-  /**
-  * Assert that a product is on the Cart list.
-  */
+/**
+ * Assert a product is on the cart list.
+ * @param {number} id - Product index in the list.
+ * @param {object} product - Product object with name, price, quantity.
+ */
   async expectProductListCart(id, product) {
-    await test.step(`Assert a product is on the cart list with name "${product.name}"`, async () => {
+    await test.step(`Assert product "${product.name}" is on the cart list`, async () => {
       await expect(this.cartItemName(id)).toHaveText(product.name);
       await expect(this.cartItemQuantity(id)).toHaveText(product.quantity);
       await expect(this.cartItemPrice(id)).toHaveText(product.price);
       await expect(this.cartItemTotalValue(id)).toHaveText(product.total);
-      await expect(this.labelTotalValueCart).toHaveText(product.total);
+    });
+  }
+  
+  /**
+  * Assert the final total value in cart, payment, or order page.
+  * @param {'cart' | 'payment' | 'order'} pageType - Page type.
+  * @param {string} totalValue - Expected total value.
+  * @param {number} [orderId] - Order ID (required for 'order' pageType).
+  */
+  async expectTotalPurchase(pageType, totalValue, orderId = undefined) {
+    await test.step(`Assert total value on ${pageType} page`, async () => {
+      const totalLocator = pageType === 'cart'
+        ? this.labelTotalValueCart
+        : pageType === 'payment'
+          ? this.labelTotalValuePayment
+          : this.orderTotalValue(orderId);
+
+      await expect(totalLocator).toHaveText(totalValue);
     });
   }
 
   /**
-  * Assert that a product is on the Payment list.
+   Assert the selected payment method for a given order.
+  * @param {number} orderId - Order ID.
+  * @param {string} paymentMethod - Expected payment method for the order.
+  */
+  async expectMethodPayment(orderId, paymentMethod) {
+    await test.step(`Assert payment method for order #${orderId} is "${paymentMethod}"`, async () => {
+      await expect(this.orderPayment(orderId)).toHaveText(`Payment Method: ${paymentMethod}`);
+    });
+  }
+
+  /**
+  * Assert a product is on the payment list.
+  * @param {number} id - Product index in the list.
+  * @param {object} product - Product object with name, price, quantity.
   */
   async expectProductListPayment(id, product) {
     await test.step(`Assert a product is on the payment list with name "${product.name}"`, async () => {
@@ -412,19 +494,19 @@ constructor(page) {
       await expect(this.paymentItemQuantity(id)).toHaveText(product.quantity);
       await expect(this.paymentItemPrice(id)).toHaveText(product.price);
       await expect(this.paymentItemTotalValue(id)).toHaveText(product.total);
-      await expect(this.labelTotalValuePayment).toHaveText(product.total);
     });
   }
 
   /**
-  * Assert that a product is on the Orders list.
+  * Assert a product is on the orders list.
+  * @param {number} orderId - Order index in the list.
+  * @param {number} itemId - Product index in the list.
+  * @param {object} product - Product object with name, price, quantity.
   */
   async expectProductListOrders(orderId, itemId, product) {
     await test.step(`Assert a product is on the order list with name "${product.name}"`, async () => {
       await expect(this.orderItemName(orderId, itemId)).toHaveText(`${product.quantity} x ${product.name}`);
       await expect(this.orderItemValue(orderId, itemId)).toHaveText(product.total);
-      await expect(this.orderPayment(orderId)).toHaveText(`Payment Method: ${product.payment}`);
-      await expect(this.orderTotalValue(orderId)).toHaveText(product.total);
     });
   }
 
