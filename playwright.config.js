@@ -31,34 +31,49 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    video: 'retain-on-failure', 
+    screenshot: 'only-on-failure', 
   },
 
-  /* Configure projects for major browsers */
+   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
+      testDir: './tests/specs/desktop',
       use: { ...devices['Desktop Chrome'] },
     },
 
     {
       name: 'firefox',
+      testDir: './tests/specs/desktop',
       use: { ...devices['Desktop Firefox'] },
     },
 
     {
       name: 'webkit',
+      testDir: './tests/specs/desktop',
       use: { ...devices['Desktop Safari'] },
     },
 
     /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
+    {
+      name: 'Mobile Chrome – Galaxy S',
+      testDir: './tests/specs/mobile',
+      use: { ...devices['Galaxy S24'] },
+    },
+    {
+      name: 'Mobile Chrome – iPhone 12',
+      testDir: './tests/specs/mobile',
+      use: { ...devices['iPhone 12'] },
+    },
+
+    {
+      name: 'Backend',
+      testDir: './tests/specs/api',
+      use: {
+        baseURL: 'https://pokeapi.co/api/v2',
+      },
+    },
 
     /* Test against branded browsers. */
     // {
@@ -78,4 +93,3 @@ export default defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
-
