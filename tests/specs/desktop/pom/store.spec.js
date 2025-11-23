@@ -93,7 +93,7 @@ test.describe('Store Page Scenarios', () => {
   // ===============================
   // ➕ Add Product to Inventory
   // ===============================
-  test('Add a product in the inventory page and validate it appears in the last position', async ({ page }) => {
+  test('Add a product in the inventory page and validate it appears in the last position and out of stock', async ({ page }) => {
     const store = new StorePage(page);
     const product = STORE_CASES.ADD;
 
