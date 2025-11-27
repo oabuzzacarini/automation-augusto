@@ -26,10 +26,6 @@ test('Menu validation', async ({ page }) => {
       // Click the menu link based on the dataset value
       await page.getByRole('link', { name: menu.value }).click();
 
-      console.log(menu.value);
-      // Validate that the corresponding page heading is visible
-      await expect(page.getByRole('heading', { name: menu.value })).toBeVisible();
-
       // Validate that the heading text matches the menu name in the dataset
       await expect(page.getByRole('heading', { name: menu.value })).toHaveText(menu.name);
     });
